@@ -5,7 +5,7 @@ from utils import powerset, f
 def im(G: Graph):
     s = list(powerset(G.vertices))
     s = sorted(s, key=lambda a: len(a), reverse=True)
-    r = set()
+    r = list()
 
     for x in s:
 
@@ -14,25 +14,27 @@ def im(G: Graph):
 
             for u in x:
 
-                if frozenset(u, v) in G.edges:
-                    
+                if frozenset((u, v)) in G.edges:
                     c = False
                     break
+            
+            if not c:
+                break
 
         if c == True:
 
             for ss in s:
 
-                if set(ss) - set(x) != set(ss):
+                if set(ss) - set(x) == set():
                     s.remove(ss)
                 
-            r = r | x
+            r.append(set(x))
 
     return r
 
 def lawer(G: Graph):
 
-    x = [None for i in range(len(G.vertices))]
+    x = [None for i in range(2**len(G.vertices))]
     x[0] = 0
     # gera a lista de subconjuntos de V
     s = list(powerset(G.vertices))
@@ -40,9 +42,9 @@ def lawer(G: Graph):
     s.sort()    # ordena de acordo com os elementos 1 antes de 2, 3, 4...
     s.sort(key=lambda a: len(a))    # ordena de acordo com o tamanho do subconjunto [] antes de [1] antes de [1,2]...
 
-    for ss in s:
+    for ss in s[1:]:
 
-        sn = f(ss)
+        sn = f(ss, G.vertices)
         x[sn] = inf
         # constrói grafo G'
         G_ = Graph()
@@ -55,11 +57,11 @@ def lawer(G: Graph):
             
             if u in G_.vertices and v in G_.vertices:
                 G_.add_edge((u, v), 1)
-        
-        for i in im(G_):
 
-            ii = f(list(set(ss) - set(i)))
+        for i in im(G_):
+            s_i = set(ss) - i
+            ii = f(s_i, G.vertices)
             if x[ii] + 1 < x[sn]:
-                x[sn] = x[i] + 1
+                x[sn] = x[ii] + 1
 
     return x[-1]

@@ -46,6 +46,9 @@ class Graph:
 
             nextl(lines)
 
+            if lines[0].strip() == "*arcs" or lines[0].strip() == "*edges":
+                nextl(lines)
+
             self._add_edges(lines)
 
     def _add_edges(self, lines):
@@ -126,10 +129,12 @@ class Graph:
         if v not in self.__vertices:
             # adiciona um vértive ao grafo
             self.__vertices.add(v)
-            self.__V = self.__V + [None] * (len(self.__neighbors) - (v-1))
+            l = [None] * ((v) - len(self.__V))
+            self.__V = self.__V + l
             self.__V[v-1] = (Vertice(v, label))
-            self.__neighbors = self.__neighbors + [None] * (len(self.__neighbors) - (v-1))
-            self.__neighbors[v] = set()
+            l = [None] * ((v) - len(self.__neighbors))
+            self.__neighbors = self.__neighbors + l
+            self.__neighbors[v-1] = set()
 
 
 class DiGraph(Graph):
@@ -140,7 +145,7 @@ class DiGraph(Graph):
     def _add_edges(self, lines):
         # leitura dos arcos
         for line in lines:
-                
+
             u, v, w = split_nd(line)
             u, v, w = int(u), int(v), float(w)
             # adiciona o arco (u, v) ao grafo

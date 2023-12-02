@@ -1,5 +1,6 @@
 import sys
 from os import path
+from coloracao import lawer
 from grafo import Graph, DiGraph
 from utils import nextl
 
@@ -10,11 +11,20 @@ def read(file_path: str) -> Graph or DiGraph:
         lines = list(iter(f))
 
         # lê o número de vértices contidos no grafo
-        n = int((list(lines)[0].split())[-1])
+        n = int((lines[0].split())[-1])
         # passa a primeira linha da lista
         nextl(lines)
-
-        return Graph(lines, n) if lines[n].strip() == "*egdes" else DiGraph(lines, n)
+        
+        if lines[n].strip() == " ":
+            if lines[n+1].strip() == "*edges":
+                return Graph(lines, n)
+            else:
+                return DiGraph(lines, n)
+        
+        if lines[n].strip() == "*edges":
+            return Graph(lines, n)
+        else:
+            return DiGraph(lines, n)
     
 def main():
     if __name__ == "__main__":
@@ -23,24 +33,18 @@ def main():
         if len(sys.argv) == 1:
             
             # 1) Componentes fortemente conexas
-            print("1) Componentes fortemente conexas")
-            directory = path.join("instances", "arvore_geradora_minima", "agm_tiny.net")
-            G = read(directory)
+            # print("1) Edmonds-Karp")
+            # directory = path.join("Instances", "fluxo_maximo", "db4096.net")
+            # G = read(directory)
             
-            print()
-
-            # 2) Ordenação topologica
-            print("2) Ordenação topologica")
-            directory = path.join("instances", "extras", "ot_tiny.net")
-            G = read(directory)
-            
-            print()
+            # print()
 
             # 3) Árvore geradora mínima (Kruskal)
-            print("2) Ordenação topologica")
-            directory = path.join("instances", "arvore_geradora_minima", "agm_tiny.net")
+            print("3) Coloração")
+            directory = path.join("Instances", "coloracao", "cor3.net")
             G = read(directory)
-            
+            print("Coloração mínima: ", end="")
+            print(lawer(G))
             print()
 
         # execução: "Usage: python3 main.py [Directory] [algorithm]"
