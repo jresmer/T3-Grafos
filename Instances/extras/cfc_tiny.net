@@ -1,0 +1,15 @@
+*vertices 6
+1 "Cafeteira"
+2 "Forno"
+3 "Torneira Elétrica"
+4 "TV"
+5 "Modem Wireless"
+6 "Geladeira"
+*arcs
+1 2 0.3
+2 1 1.1
+5 2 1.7
+5 3 3.1
+6 5 9.0
+3 4 1.2
+4 6 2.0
