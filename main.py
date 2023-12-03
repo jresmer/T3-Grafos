@@ -1,6 +1,7 @@
 import sys
 from os import path
 from coloracao import lawer
+from edmons_karp import prepare_residual_network, edmonds_karp, find_s_t
 from grafo import Graph, DiGraph
 from utils import nextl
 
@@ -32,14 +33,17 @@ def main():
         # execução padrão
         if len(sys.argv) == 1:
             
-            # 1) Componentes fortemente conexas
-            # print("1) Edmonds-Karp")
-            # directory = path.join("Instances", "fluxo_maximo", "db4096.net")
-            # G = read(directory)
-            
-            # print()
+            # 1) Fluxo Máximo
+            print("1) Edmonds-Karp")
+            directory = path.join("Instances", "fluxo_maximo", "fluxo_maximo_aula.net")
+            G = read(directory)
+            G = prepare_residual_network(G)
+            s, t = find_s_t(G)
+            print("Fluxo Máximo: ", end="")
+            print(edmonds_karp(G, s, t))
+            print()
 
-            # 3) Árvore geradora mínima (Kruskal)
+            # 3) Coloração Mínima
             print("3) Coloração")
             directory = path.join("Instances", "coloracao", "cor3.net")
             G = read(directory)
@@ -57,18 +61,21 @@ def main():
 
             match algorith:
 
-                # 1) Componentes fortemente conexas
+                # 1) Fluxo Máximo
                 case "1":
-                    ...
-                # 2) Ordenação topologica
+                    G = prepare_residual_network(G)
+                    s, t = find_s_t(G)
+                    print("Fluxo Máximo: ", end="")
+                    print(edmonds_karp(G, s, t))
+                    print()
+                # 2) Emparelhamento Máximo
                 case "2":
-                    ...
-                # 3) Árvore geradora mínima (Kruskal)
+                    print("Emparelhamento Máximo Não Implementado")
+                # 3) Coloração Mínima
                 case "3":
-                    ...
-                # Todos
-                case _:
-                    ...
+                    print("Coloração mínima: ", end="")
+                    print(lawer(G))
+                    print()
         # erro
         else:
             sys.exit("Usage: python3 main.py or python3 main.py [Directory] [algorithm]")

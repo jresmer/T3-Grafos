@@ -40,7 +40,7 @@ class Graph:
                 v, label = split_st(lines[0])
                 # adiciona um vértice ao seu conjunto V
                 self.__vertices.add(int(v))
-                self.__V[int(v) - 1] = Vertice(int(v), label.strip()[1:-1])
+                self.__V[int(v) - 1] = Vertice(int(v), label.strip())
                 # passa uma linha
                 nextl(lines)
 
