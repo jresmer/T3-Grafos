@@ -1,6 +1,6 @@
 import sys
 from os import path
-from coloracao import lawer
+from coloracao import lawer_output
 from edmons_karp import prepare_residual_network, edmonds_karp, find_s_t
 from grafo import Graph, DiGraph
 from utils import nextl
@@ -48,7 +48,7 @@ def main():
             directory = path.join("Instances", "coloracao", "cor3.net")
             G = read(directory)
             print("Coloração mínima: ", end="")
-            print(lawer(G))
+            lawer_output(G)
             print()
 
         # execução: "Usage: python3 main.py [Directory] [algorithm]"
@@ -74,7 +74,7 @@ def main():
                 # 3) Coloração Mínima
                 case "3":
                     print("Coloração mínima: ", end="")
-                    print(lawer(G))
+                    lawer_output(G)
                     print()
         # erro
         else:

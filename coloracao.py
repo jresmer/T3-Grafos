@@ -35,6 +35,8 @@ def im(G: Graph):
 def lawer(G: Graph):
 
     x = [None for i in range(2**len(G.vertices))]
+    a = [None for i in range(2**len(G.vertices))]
+    a[0] = None
     x[0] = 0
     # gera a lista de subconjuntos de V
     s = list(powerset(G.vertices))
@@ -63,5 +65,32 @@ def lawer(G: Graph):
             ii = f(s_i, G.vertices)
             if x[ii] + 1 < x[sn]:
                 x[sn] = x[ii] + 1
+                a[sn] = ii
 
-    return x[-1]
+    return x[-1], a, s
+
+def lawer_output(G: Graph):
+
+    answer, a, s = lawer(G)
+    
+
+    print(answer)
+
+    p = len(a) - 1
+    l = []
+
+    while p:
+        l.append(p)
+        p = a[p]
+
+    l.reverse()
+
+    color = 1
+    visited = set()
+    
+    for p in l:
+        ss = set(s[p]) - visited
+        visited = visited | ss
+
+        print("Conjunto: {}; Número Cromático: {}".format(ss, color))
+        color += 1
